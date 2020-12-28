@@ -19,4 +19,9 @@ def results():
     result = req.get('queryResult')
     parameters = result.get('parameters')
 
-    if parameters.get('location').get('city')
+    if parameters.get('location').get('city'):
+        geolocator = Nominatim(user_agent='weather-bot')
+        location = geolocator.geocode(parameters.get('location').get('city'))
+        lat = location.latitude
+        long = location.longitude
+        weather_req = requests.get('https://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&appid={}'.format(lat, long, API_KEY))
